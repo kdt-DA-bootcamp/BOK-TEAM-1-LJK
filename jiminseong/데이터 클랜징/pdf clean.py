@@ -7,7 +7,8 @@ import pandas as pd
 words_to_remove = [""]
 
 # PDF 파일 경로 설정
-pdf_dir = "C:/Users/abwm2/Desktop/BootCamp/TIL/데이터 클랜징/BOK_Minutes"
+pdf_dir = pdf_dir = "C:/Users/abwm2/Desktop/BootCamp/TIL/JIMINSEONG/jiminseong/BOK_Minutes2"
+
 
 # PDF 파일 처리
 for pdf_file in os.listdir(pdf_dir):
