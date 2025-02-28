@@ -1,7 +1,9 @@
 import scrapy
 import re
 import os
+import PyPDF2
 from datetime import datetime
+from io import BytesIO
 
 class DebentureSpider(scrapy.Spider):
     name = "debenture"
@@ -75,7 +77,30 @@ class DebentureSpider(scrapy.Spider):
         os.makedirs(output_dir, exist_ok=True)
         
         # PDF 파일 저장
-        with open(os.path.join(output_dir, pdf_name), 'wb') as f:
+        pdf_path = os.path.join(output_dir, pdf_name)
+        with open(pdf_path, 'wb') as f:
             f.write(response.body)
         
         self.logger.info(f"PDF 파일 다운로드 완료: {pdf_name}")
+        
+        # PDF에서 텍스트 추출
+        extracted_text = self.extract_text_from_pdf(response.body)
+        
+        # 추출된 텍스트 로그에 출력
+        self.logger.info(f"PDF에서 추출된 텍스트: {extracted_text[:500]}")  # 첫 500글자만 출력
+        
+        # 추가적으로 텍스트 파일로 저장 가능
+        text_file_name = f"{title}.txt"
+        with open(os.path.join(output_dir, text_file_name), 'w', encoding='utf-8') as text_file:
+            text_file.write(extracted_text)
+        
+        self.logger.info(f"PDF에서 추출된 텍스트 저장 완료: {text_file_name}")
+
+    def extract_text_from_pdf(self, pdf_data):
+        # PyPDF2를 사용하여 PDF에서 텍스트 추출
+        with BytesIO(pdf_data) as pdf_file:
+            reader = PyPDF2.PdfReader(pdf_file)
+            text = ''
+            for page in reader.pages:
+                text += page.extract_text()
+        return text
