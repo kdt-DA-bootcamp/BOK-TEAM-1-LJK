@@ -1,0 +1,16 @@
+<<<<<<< HEAD
+*.env
+=======
+*.env
+*.csv
+*.json
+*.log
+*.txt
+*.zip
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tgz
+**/downloaded_pdfs/
+>>>>>>> bb5fe532052a65568f5396c5279c58effc69f8cc
